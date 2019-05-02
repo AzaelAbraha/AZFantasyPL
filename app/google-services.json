@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "855484662794",
+    "firebase_url": "https://azfantasypl.firebaseio.com",
+    "project_id": "azfantasypl",
+    "storage_bucket": "azfantasypl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855484662794:android:6d8a4d943ca0d62b",
+        "android_client_info": {
+          "package_name": "com.example.azfantasypl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855484662794-s3kkc9rbfce7ldskvjojushkb20ta7bj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.azfantasypl",
+            "certificate_hash": "6bcfa80956d8450cb1f292d303b0f9065e794ad1"
+          }
+        },
+        {
+          "client_id": "855484662794-057chaoe2cm5ds1qgdlhcdsi968k075j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA18jfUew8HC2eFv_PitpyPvuEDpIG8guI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "855484662794-057chaoe2cm5ds1qgdlhcdsi968k075j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
