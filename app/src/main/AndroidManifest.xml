@@ -9,12 +9,19 @@
         android:roundIcon="@drawable/icon_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUpActivity"></activity>
-        <activity android:name=".SelectPlayersActivity" />
+        <activity
+            android:name=".SignUpActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".SelectPlayersActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".HomePage"
-            android:label="@string/title_activity_home_page" />
-        <activity android:name=".MainActivity">
+            android:label="@string/title_activity_home_page"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

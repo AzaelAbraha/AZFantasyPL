@@ -45,7 +45,7 @@ public class MyTeamFragment extends Fragment {
 
 //    private FloatingActionButton FAB;
 
-    final int PLAYER_SIZE = 20;
+    final int PLAYER_SIZE = 100;
     String playerId[] = new String[PLAYER_SIZE];
     String firstName[] = new String[PLAYER_SIZE];
     String lastName[] = new String[PLAYER_SIZE];
@@ -129,12 +129,6 @@ public class MyTeamFragment extends Fragment {
         mPreferences = this.getActivity().getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         username = mPreferences.getString("USER_KEY","");
 
-//        player1ID = mPreferences.getString("PLAYER1","player1");
-//        player2ID = mPreferences.getString("PLAYER2","player2");
-//        player3ID = mPreferences.getString("PLAYER3","player3");
-//        player4ID = mPreferences.getString("PLAYER4","player4");
-//        player5ID = mPreferences.getString("PLAYER5","player5");
-
         db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -150,65 +144,99 @@ public class MyTeamFragment extends Fragment {
                         }
                         count++;
                     }
+                    db.collection("players").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    if(document.getId().equals(player1ID)){
+                                        String toString = document.getString("first_name") + " " + document.getString("last_name");
+                                        tv_player1.setText(toString);
+                                        imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+                                        iv_player1.setImageResource(imageRes);
+                                    }
+                                    if(document.getId().equals(player2ID)){
+                                        String toString = document.getString("first_name") + " " + document.getString("last_name");
+                                        tv_player2.setText(toString);
+                                        imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+                                        iv_player2.setImageResource(imageRes);
+                                    }
+                                    if(document.getId().equals(player3ID)){
+                                        String toString = document.getString("first_name") + " " + document.getString("last_name");
+                                        tv_player3.setText(toString);
+                                        imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+                                        iv_player3.setImageResource(imageRes);
+                                    }
+                                    if(document.getId().equals(player4ID)){
+                                        String toString = document.getString("first_name") + " " + document.getString("last_name");
+                                        tv_player4.setText(toString);
+                                        imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+                                        iv_player4.setImageResource(imageRes);
+                                    }
+                                    if(document.getId().equals(player5ID)){
+                                        String toString = document.getString("first_name") + " " + document.getString("last_name");
+                                        tv_player5.setText(toString);
+                                        imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+                                        iv_player5.setImageResource(imageRes);
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }else{
                     Toast.makeText(mContext.getApplicationContext(),("ERROR!! CANNOT ACCESS DATABASE."),Toast.LENGTH_LONG).show();
                 }
             }
         });
-        db.collection("players").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        if(document.getId().equals(player1ID)){
-                            String toString = document.getString("first_name") + " " + document.getString("last_name");
-                            tv_player1.setText(toString);
-                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
-                            iv_player1.setImageResource(imageRes);
-                        }
-                        if(document.getId().equals(player2ID)){
-                            String toString = document.getString("first_name") + " " + document.getString("last_name");
-                            tv_player2.setText(toString);
-                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
-                            iv_player2.setImageResource(imageRes);
-                        }
-                        if(document.getId().equals(player3ID)){
-                            String toString = document.getString("first_name") + " " + document.getString("last_name");
-                            tv_player3.setText(toString);
-                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
-                            iv_player3.setImageResource(imageRes);
-                        }
-                        if(document.getId().equals(player4ID)){
-                            String toString = document.getString("first_name") + " " + document.getString("last_name");
-                            tv_player4.setText(toString);
-                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
-                            iv_player4.setImageResource(imageRes);
-                        }
-                        if(document.getId().equals(player5ID)){
-                            String toString = document.getString("first_name") + " " + document.getString("last_name");
-                            tv_player5.setText(toString);
-                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
-                            iv_player5.setImageResource(imageRes);
-                        }
-                    }
-                }
-            }
-        });
+//        db.collection("players").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        if(document.getId().equals(player1ID)){
+//                            String toString = document.getString("first_name") + " " + document.getString("last_name");
+//                            tv_player1.setText(toString);
+//                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+//                            iv_player1.setImageResource(imageRes);
+//                        }
+//                        if(document.getId().equals(player2ID)){
+//                            String toString = document.getString("first_name") + " " + document.getString("last_name");
+//                            tv_player2.setText(toString);
+//                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+//                            iv_player2.setImageResource(imageRes);
+//                        }
+//                        if(document.getId().equals(player3ID)){
+//                            String toString = document.getString("first_name") + " " + document.getString("last_name");
+//                            tv_player3.setText(toString);
+//                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+//                            iv_player3.setImageResource(imageRes);
+//                        }
+//                        if(document.getId().equals(player4ID)){
+//                            String toString = document.getString("first_name") + " " + document.getString("last_name");
+//                            tv_player4.setText(toString);
+//                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+//                            iv_player4.setImageResource(imageRes);
+//                        }
+//                        if(document.getId().equals(player5ID)){
+//                            String toString = document.getString("first_name") + " " + document.getString("last_name");
+//                            tv_player5.setText(toString);
+//                            imageRes =  mContext.getResources().getIdentifier("icon_" + document.getId(), "drawable", mContext.getPackageName());
+//                            iv_player5.setImageResource(imageRes);
+//                        }
+//                    }
+//                }
+//            }
+//        });
 
         for(int i=0; i<count; i++) {
-            if(playerId[i] == player1ID) {
+            if(playerId[i] == player1ID)
                 tv_player1.setText(firstName[i] + " " + lastName[i]);
-            }
-
             if(playerId[i] == player2ID)
                 tv_player2.setText(firstName[i] + " " + lastName[i]);
-
             if(playerId[i] == player3ID)
                 tv_player3.setText(firstName[i] + " " + lastName[i]);
-
             if(playerId[i] == player4ID)
                 tv_player4.setText(firstName[i] + " " + lastName[i]);
-
             if(playerId[i] == player2ID)
                 tv_player5.setText(firstName[i] + " " + lastName[i]);
         }
@@ -227,6 +255,7 @@ public class MyTeamFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
+
         return v;
     }
 

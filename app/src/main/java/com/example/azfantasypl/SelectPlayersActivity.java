@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class SelectPlayersActivity extends AppCompatActivity {
 
-    final int PLAYER_SIZE = 20;
+    final int PLAYER_SIZE = 100;
     List<Player> playerList;
     List<Player> selectedPlayersList;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -45,6 +45,8 @@ public class SelectPlayersActivity extends AppCompatActivity {
     int imageRes[] = new int [PLAYER_SIZE];
     CheckBox mCheckBox[] = new CheckBox[PLAYER_SIZE];
     int count = 0;
+
+    long score = 0;
 
     RecyclerView myRecyvlerView;
     PlayerListRecyclerViewAdapter myAdapter;
@@ -108,7 +110,21 @@ public class SelectPlayersActivity extends AppCompatActivity {
                     myRecyvlerView.setAdapter(myAdapter);
 //                    populateList(count);
                 }else{
-                    Toast.makeText(getApplicationContext(),("Error loading players from database!"),Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),("Error loading players from database!"),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot document: task.getResult()){
+                        if(document.getString("username").equals(username)){
+                            score = document.getLong("score");
+                        }
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(),("Error getting user's score from database!"),Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -132,11 +148,6 @@ public class SelectPlayersActivity extends AppCompatActivity {
             Map<String, Object> team = new HashMap<>();
             Map<String, Object> InitialPts = new HashMap<>();
             Display = "";
-            for (Player p : myAdapter.mSelectedPlayersList) {
-                Display = Display + p.getfName() + " " + p.getlName() + "\n";
-                Toast.makeText(getApplicationContext(), Display, Toast.LENGTH_LONG).show();
-            }
-
             myAdapter.mSelectedPlayersList.get(0).getId();
             team.put("player1", myAdapter.mSelectedPlayersList.get(0).getId());
             team.put("player2", myAdapter.mSelectedPlayersList.get(1).getId());
@@ -160,6 +171,11 @@ public class SelectPlayersActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"failed to save initial player points.",Toast.LENGTH_LONG).show();
                 }
             });
+
+            db.collection("users").document(username).update("prev_score",score);
+            SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+            preferencesEditor.putLong("INITIAL_SCORE", 0);
+            preferencesEditor.apply();
 
             Intent intent = new Intent(this, HomePage.class);
             startActivity(intent);

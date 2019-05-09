@@ -24,6 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     final int NUM_USERS = 20;
+    String username = "";
 
     List<Player> playerList;
     EditText usernameInput;
@@ -47,23 +48,27 @@ public class MainActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.button_login);
 
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        username = mPreferences.getString("USER_KEY","");
+
+        if(!username.equals("")){
+            Login(username);
+        }
 
         db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),("Success."),Toast.LENGTH_LONG).show();
+                if (task.isSuccessful()) {
                     count = 0;
-                    for(QueryDocumentSnapshot document: task.getResult()){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
                         dbUsername[count] = document.getString("username");
                         dbPassword[count] = document.getString("password");
                         count++;
                     }
-                }else{
-                    Toast.makeText(getApplicationContext(),("ERROR!! CAN NOT ACCESS DATABASE."),Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,71 +76,31 @@ public class MainActivity extends AppCompatActivity {
                 String username = usernameInput.getText().toString();
                 String password = passwordInput.getText().toString();
                 boolean userExists = false;
-                for(int i=0; i<count; i++){
-                    if(username.equals(dbUsername[i])){
+                for (int i = 0; i < count; i++) {
+                    if (username.equals(dbUsername[i])) {
                         userExists = true;
-                        if(password.equals(dbPassword[i])){
+                        if (password.equals(dbPassword[i])) {
                             Login(username);
-                        }else {
+                        } else {
                             Toast.makeText(getApplicationContext(), ("Incorrect password."), Toast.LENGTH_LONG).show();
                         }
                     }
                 }
-                if(!userExists){
-                    Toast.makeText(getApplicationContext(),("User not found"),  Toast.LENGTH_LONG).show();
+                if (!userExists) {
+                    Toast.makeText(getApplicationContext(), ("User not found"), Toast.LENGTH_LONG).show();
                 }
             }
         });
 
 
-//        playerList = new ArrayList<>();
-//        playerList.add(new Player("Sergio","Aguero","Manchester City", "FWD", R.drawable.icon_aguero,19));
-//        playerList.add(new Player("Kevin","De Bruyne","Manchester City", "MID", R.drawable.icon_de_bruyne,5));
-//        playerList.add(new Player("Paul","Pogba","Manchester United", "MID", R.drawable.icon_pogba,15));
-//        playerList.add(new Player("Harry","Kane","Tottenham", "FWD", R.drawable.icon_kane,17));
-//        playerList.add(new Player("P.E","Aubameyang","Arsenal", "FWD", R.drawable.icon_aubameyang,14));
-//        playerList.add(new Player("Mo","Salah","Liverpool", "FWD", R.drawable.icon_salah,13));
-//        playerList.add(new Player("David","De Gea","Manchester United", "GK", R.drawable.icon_de_gea,11));
-//        playerList.add(new Player("Eden","Hazard","Chelsea", "MID", R.drawable.icon_hazard,17));
-//        playerList.add(new Player("First","Last","Team", "Position", R.drawable.icon_player,0));
-//        playerList.add(new Player("First","Last","Team", "Position", R.drawable.icon_player,0));
-//        playerList.add(new Player("First","Last","Team", "Position", R.drawable.icon_player,0));
-//        playerList.add(new Player("First","Last","Team", "Position", R.drawable.icon_player,0));
-//        playerList.add(new Player("First","Last","Team", "Position", R.drawable.icon_player,0));
-//        playerList.add(new Player("First","Last","Team", "Position", R.drawable.icon_player,0));
-//        playerList.add(new Player("First","Last","Team", "Position", R.drawable.icon_player,0));
 
     }
-
-//    public void onLoginClicked (View view){
-//        String username = usernameInput.getText().toString();
-//        String password = passwordInput.getText().toString();
-//        boolean userExists = false;
-//        for(int i=0; i<count; i++){
-//            if(username.equals(dbUsername[i])){
-//                userExists = true;
-//                if(password.equals(dbPassword[i])){
-//                    Toast.makeText(getApplicationContext(),(username + " Logged In. "),  Toast.LENGTH_LONG).show();
-//                    Intent intent = new Intent(this, HomePage.class);
-//                    intent.putExtra("user", username);
-//                    startActivity(intent);
-//                }else {
-//                    Toast.makeText(getApplicationContext(), ("Incorrect password."), Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }
-//        if(!userExists){
-//            Toast.makeText(getApplicationContext(),("User not found"),  Toast.LENGTH_LONG).show();
-//        }
-//    }
 
     public void Login (String username){
 
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         preferencesEditor.putString("USER_KEY", username);
         preferencesEditor.apply();
-
-        Toast.makeText(getApplicationContext(),(username + " Logged In. "),  Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(this, HomePage.class);
         startActivity(intent);

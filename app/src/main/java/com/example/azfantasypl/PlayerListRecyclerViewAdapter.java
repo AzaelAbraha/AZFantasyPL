@@ -54,14 +54,27 @@ public class PlayerListRecyclerViewAdapter extends RecyclerView.Adapter<PlayerLi
                 CheckBox chkbx = (CheckBox) v;
                 if(chkbx.isChecked()){
                     mSelectedPlayersList.add(mPlayerList.get(pos));
-                    Toast.makeText(mContext, "Player selected! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext.getApplicationContext(), "Player Selected", Toast.LENGTH_SHORT).show();
                 }else{
                     mSelectedPlayersList.remove(mPlayerList.get(pos));
-                    Toast.makeText(mContext, "Player unselected! ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext.getApplicationContext(), "Player Unselected", Toast.LENGTH_SHORT).show();
                 }
+
+//                if(isSelected(mPlayerList.get(pos).getId())){
+//                    chkbx.setChecked(true);
+//                }else{
+//                    chkbx.setChecked(false);
+//
+//                }
+
             }
         });
 
+        if(isSelected(mPlayerList.get(i).getId())){
+            myViewHolder.mCheckBox.setChecked(true);
+        }else{
+            myViewHolder.mCheckBox.setChecked(false);
+        }
 
         myViewHolder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +84,17 @@ public class PlayerListRecyclerViewAdapter extends RecyclerView.Adapter<PlayerLi
         });
 
 
+    }
+
+    public boolean isSelected(String playerID){
+        boolean isSelected = false;
+        for(int i =0; i<mSelectedPlayersList.size(); i++){
+            if(mSelectedPlayersList.get(i).getId().equals(playerID)){
+                isSelected = true;
+            }
+        }
+
+        return isSelected;
     }
 
     @Override

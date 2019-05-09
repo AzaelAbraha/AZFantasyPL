@@ -1,5 +1,6 @@
 package com.example.azfantasypl;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -27,6 +28,9 @@ public class HomePage extends AppCompatActivity {
 
     List<Player> playerList;
 
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile = "com.example.azfantasypl";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,8 @@ public class HomePage extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         myteamFragment = new MyTeamFragment();
+
+        mPreferences = getSharedPreferences(sharedPrefFile,MODE_PRIVATE);
 
         switchFragment(homeFragment);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_Nav);
@@ -87,6 +93,10 @@ public class HomePage extends AppCompatActivity {
     };
 
     public void logout(){
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putString("USER_KEY", "");
+        preferencesEditor.apply();
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }

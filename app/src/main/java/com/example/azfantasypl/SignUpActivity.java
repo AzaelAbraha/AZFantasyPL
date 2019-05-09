@@ -32,6 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
     Context mContext = this;
 
     private Button signupButton;
+    private EditText teamNameText;
     private EditText emailText;
     private EditText usernameText;
     private EditText passwordText;
@@ -42,6 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
     String dbEmail[] = new String[NUM_USERS];
     int count = 0;
 
+    String mTeamName;
     String mUsername;
     String mEmail;
     String mPassword;
@@ -59,6 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         signupButton = findViewById(R.id.bt_createAcc);
+        teamNameText = findViewById(R.id.et_teamName);
         emailText = findViewById(R.id.et_newEmailAddress);
         usernameText = findViewById(R.id.et_newUsername);
         passwordText = findViewById(R.id.et_newPassword);
@@ -85,24 +88,12 @@ public class SignUpActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTeamName = teamNameText.getText().toString();
                 mEmail = emailText.getText().toString();
                 mUsername = usernameText.getText().toString();
                 mPassword = passwordText.getText().toString();
                 mPassword2 = password2Text.getText().toString();
                 /**/
-
-//                ValueEventListener userListener = new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        User user = dataSnapshot.getValue(User.class);
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                }
-//                mDatabase.addListenerForSingleValueEvent();
 
                 if(checkForError(mUsername,mEmail,mPassword,mPassword2)) {
                     WriteNewUser(mUsername, mEmail, mPassword);
@@ -120,17 +111,9 @@ public class SignUpActivity extends AppCompatActivity {
         preferencesEditor.putString("USER_KEY", username);
         preferencesEditor.apply();
 
-        db.collection("users").document(username).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Toast.makeText(getApplicationContext(),"User added to the database.",Toast.LENGTH_LONG).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(),"Unable to add user to the database.",Toast.LENGTH_LONG).show();
-                }
-        });
+        db.collection("users").document(username).set(newUser);
+        db.collection("users").document(username).update("team_name", mTeamName);
+        db.collection("users").document(username).update("prev_score", 0);
     }
 
     public boolean checkForError(String username, String email, String password, String password2){
